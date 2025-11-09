@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --font-header: 'Averia Serif Libre', 'serif';
+  --color-pine: #01796F;
+  --color-pine-dark: #00332E;
+  --color-pine-muted: #01796F7F;
+  --color-pine-muted-bg: #01796F26;
+  --text-hero: 4rem;
+  --text-heading: 2rem;
+  --text-base: 1.25rem;
+}
