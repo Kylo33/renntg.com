@@ -8,93 +8,97 @@ import Divider from "../components/Divider.astro";
 import portrait from "../assets/portrait.jpg";
 import top_left_tape from "../assets/tape/top_left.png";
 import bottom_right_tape from "../assets/tape/bottom_right.png";
-import HeaderAnchor from "../components/HeaderAnchor.astro";
+import HeadingAnchor from "../components/HeadingAnchor.astro";
 import ProjectDescription from "../components/ProjectDescription.astro";
 import Footer from "../components/Footer.astro";
 ---
 
 <Layout>
-  <h1 class="text-hero text-center my-24 text-pine font-header font-bold">
-    Renn Gilbert
-  </h1>
-  <section>
-    <HeaderAnchor headerId="about" label="Permalink: About">
-      <h2
-        class="text-heading font-bold text-pine font-header inline-block"
-        id="about"
-      >
-        About Me
-      </h2>
-    </HeaderAnchor>
-    <div class="float-end ml-6 mb-6 relative">
-      <Image
-        src={portrait}
-        alt="Portrait of Renn Gilbert"
-        class="aspect-square rounded-xl shadow-md object-cover max-w-80"
-        loading="eager"
-      />
-      <Image
-        src={top_left_tape}
-        alt=""
-        class="absolute -top-10 -left-10 opacity-50"
-        loading="eager"
-      />
-      <Image
-        src={bottom_right_tape}
-        alt=""
-        class="absolute -bottom-8 -right-8 opacity-50"
-        loading="eager"
-      />
-    </div>
-    <p class="text-pine-dark text-base/8 mb-4">
-      Hi, I'm an undergraduate computer science student from Centennial, CO,
-      currently studying at Colorado School of Mines. I spend my free time
-      running, practicing speedcubing, and building projects for the web! Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-    </p>
-    <p class="text-pine-dark text-base/8">
-      Hi, I'm an undergraduate computer sciencestudent from Centennial, CO,
-      currently studying at Colorado School of Mines. I spend my free time
-      running, practicing speedcubing, and building projects for the web! Lorem
-      ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-    </p>
-  </section>
-  <Divider />
-  <section>
-    <HeaderAnchor headerId="projects" label="Permalink: Projects">
-      <h2 class="text-heading font-bold text-pine font-header" id="projects">
-        Projects
-      </h2>
-    </HeaderAnchor>
-    <ul class="flex flex-col gap-y-4">
-      <ProjectDescription />
-      <ProjectDescription />
-      <ProjectDescription />
-      <ProjectDescription />
-    </ul>
-  </section>
-  <Divider />
-  <section>
-    <HeaderAnchor headerId="photos" label="Permalink: Photos">
-      <h2 class="text-heading font-bold text-pine font-header" id="photos">
-        Photos
-      </h2>
-    </HeaderAnchor>
-    <div class="grid grid-cols-4 gap-2">
-      {
-        Array.from({ length: 8 }).map((_, i) => (
-          <Image
-            src={portrait}
-            alt=""
-            class="aspect-square object-cover shadow-md rounded-xl"
-          />
-        ))
-      }
-    </div>
-  </section>
+  <header>
+    <h1 class="text-hero text-center my-24 text-pine font-header font-bold">
+      Renn Gilbert
+    </h1>
+  </header>
+  <main>
+    <section>
+      <HeadingAnchor headerId="about" label="Permalink: About">
+        <h2
+          class="text-heading font-bold text-pine font-header inline-block"
+          id="about"
+        >
+          About Me
+        </h2>
+      </HeadingAnchor>
+      <div class="float-end ml-6 mb-6 relative">
+        <Image
+          src={portrait}
+          alt="Portrait of Renn Gilbert"
+          class="aspect-square rounded-xl shadow-md object-cover max-w-80"
+          loading="eager"
+        />
+        <Image
+          src={top_left_tape}
+          alt=""
+          class="absolute -top-10 -left-10 opacity-50"
+          loading="eager"
+        />
+        <Image
+          src={bottom_right_tape}
+          alt=""
+          class="absolute -bottom-8 -right-8 opacity-50"
+          loading="eager"
+        />
+      </div>
+      <p class="text-pine-dark text-base/8 mb-4">
+        Hi, I'm an undergraduate computer science student from Centennial, CO,
+        currently studying at Colorado School of Mines. I spend my free time
+        running, practicing speedcubing, and building projects for the web!
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
+        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+      </p>
+      <p class="text-pine-dark text-base/8">
+        Hi, I'm an undergraduate computer sciencestudent from Centennial, CO,
+        currently studying at Colorado School of Mines. I spend my free time
+        running, practicing speedcubing, and building projects for the web!
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
+        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+      </p>
+    </section>
+    <Divider />
+    <section>
+      <HeadingAnchor headerId="projects" label="Permalink: Projects">
+        <h2 class="text-heading font-bold text-pine font-header" id="projects">
+          Projects
+        </h2>
+      </HeadingAnchor>
+      <ul class="flex flex-col gap-y-4">
+        <ProjectDescription />
+        <ProjectDescription />
+        <ProjectDescription />
+        <ProjectDescription />
+      </ul>
+    </section>
+    <Divider />
+    <section>
+      <HeadingAnchor headerId="photos" label="Permalink: Photos">
+        <h2 class="text-heading font-bold text-pine font-header" id="photos">
+          Photos
+        </h2>
+      </HeadingAnchor>
+      <div class="grid grid-cols-4 gap-2">
+        {
+          Array.from({ length: 8 }).map((_, i) => (
+            <Image
+              src={portrait}
+              alt=""
+              class="aspect-square object-cover shadow-md rounded-xl"
+            />
+          ))
+        }
+      </div>
+    </section>
+  </main>
   <Footer />
 </Layout>
