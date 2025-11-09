@@ -1,16 +1,21 @@
 ---
 import { Link } from "@lucide/astro";
 
-import Image from "astro/components/Image.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
 import Layout from "../layouts/Layout.astro";
+
 import Divider from "../components/Divider.astro";
+import HeadingAnchor from "../components/HeadingAnchor.astro";
+import ProjectDescription from "../components/ProjectDescription.astro";
+import Footer from "../components/Footer.astro";
 
 import portrait from "../assets/portrait.jpg";
 import top_left_tape from "../assets/tape/top_left.png";
 import bottom_right_tape from "../assets/tape/bottom_right.png";
-import HeadingAnchor from "../components/HeadingAnchor.astro";
-import ProjectDescription from "../components/ProjectDescription.astro";
-import Footer from "../components/Footer.astro";
+
+const projects = await getCollection("projects");
 ---
 
 <Layout>
@@ -51,19 +56,15 @@ import Footer from "../components/Footer.astro";
       </div>
       <p class="text-pine-dark text-base/8 mb-4">
         Hi, I'm an undergraduate computer science student from Centennial, CO,
-        currently studying at Colorado School of Mines. I spend my free time
-        running, practicing speedcubing, and building projects for the web!
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+        currently studying at the Colorado School of Mines. I spend my free time
+        running, practicing speedcubing, and building interesting software!
       </p>
       <p class="text-pine-dark text-base/8">
-        Hi, I'm an undergraduate computer sciencestudent from Centennial, CO,
-        currently studying at Colorado School of Mines. I spend my free time
-        running, practicing speedcubing, and building projects for the web!
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
-        sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+        I love attending hackathons (check out my <a
+          href="https://devpost.com/Kylo33"
+          class="text-pine underline">Devpost profile</a
+        >!) because they are an incredible way to learn new skills and meet new
+        people, and I plan to attend many more in the rest of my time at Mines.
       </p>
     </section>
     <Divider />
@@ -74,10 +75,12 @@ import Footer from "../components/Footer.astro";
         </h2>
       </HeadingAnchor>
       <ul class="flex flex-col gap-y-4">
-        <ProjectDescription />
-        <ProjectDescription />
-        <ProjectDescription />
-        <ProjectDescription />
+        {
+          projects
+            .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime())
+            .reverse()
+            .map((project) => <ProjectDescription project={project} />)
+        }
       </ul>
     </section>
     <Divider />
