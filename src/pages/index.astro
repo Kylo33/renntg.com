@@ -27,7 +27,20 @@ let image_paths = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 let photos = await Promise.all(
-  Object.values(image_paths).map((img) => img().then((i) => i.default))
+  Object.values(image_paths).map(async (img) => {
+    const original = (await img()).default;
+    const optimized = await getImage({
+      src: original,
+      width: 1200,
+      format: "webp",
+      quality: 80,
+    });
+    return {
+      ...optimized,
+      width: original.width,
+      height: original.height,
+    };
+  })
 );
 ---
 
