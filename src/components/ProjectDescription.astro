@@ -1,4 +1,5 @@
 ---
+import { ExternalLink } from "@lucide/astro";
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 
@@ -20,8 +21,12 @@ const { Content } = await render(project);
     }
   </div>
   <div class="flex justify-between col-span-3 items-center">
-    <h3 class="font-bold underline text-base text-pine-dark">
-      {project.data.title}
+    <h3 class="font-bold text-base">
+      <a
+        href={project.data.link}
+        class="underline text-pine flex items-center gap-2"
+        >{project.data.title}<ExternalLink size={18} /></a
+      >
     </h3>
     <div class="flex gap-2">
       {

@@ -2,7 +2,7 @@
 import { Link } from "@lucide/astro";
 
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 
 import Layout from "../layouts/Layout.astro";
 
@@ -15,7 +15,20 @@ import portrait from "../assets/portrait.jpg";
 import top_left_tape from "../assets/tape/top_left.png";
 import bottom_right_tape from "../assets/tape/bottom_right.png";
 
+import { ColumnsPhotoAlbum } from "react-photo-album";
+import "react-photo-album/columns.css";
+import PhotoAlbum from "../components/PhotoAlbum";
+import { glob } from "astro/loaders";
+
 const projects = await getCollection("projects");
+
+let image_paths = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/photos/**/*.*"
+);
+
+let photos = await Promise.all(
+  Object.values(image_paths).map((img) => img().then((i) => i.default))
+);
 ---
 
 <Layout>
@@ -90,17 +103,7 @@ const projects = await getCollection("projects");
           Photos
         </h2>
       </HeadingAnchor>
-      <div class="grid grid-cols-4 gap-2">
-        {
-          Array.from({ length: 8 }).map((_, i) => (
-            <Image
-              src={portrait}
-              alt=""
-              class="aspect-square object-cover shadow-md rounded-xl"
-            />
-          ))
-        }
-      </div>
+      <PhotoAlbum photos={photos} client:load />
     </section>
   </main>
   <Footer />
