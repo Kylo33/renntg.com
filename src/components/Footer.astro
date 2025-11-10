@@ -1,28 +1,22 @@
 ---
-import { Mail } from "@lucide/astro";
-import LinkedIn from "../assets/icons/linkedin.svg";
-import github from "../assets/icons/github.svg";
+const webring = {
+  next: "https://grantlemons.com/webring/next?Referer=renntg.com",
+  prev: "https://grantlemons.com/webring/prev?Referer=renntg.com",
+};
 ---
 
 <footer>
-  <ul class="flex gap-4 items-center justify-center text-pine my-8">
+  <ul class="flex gap-4 items-center justify-center text-pine my-8 underline">
+    <li class="mr-auto"><a href={webring.prev}>Previous</a></li>
     <li>
-      <a
-        href="mailto:renn_gilbert@mines.edu"
-        class="flex gap-2 items-center justify-center underline">Email</a
-      >
+      <a href="mailto:renn_gilbert@mines.edu">Email</a>
     </li>
     <li>
-      <a
-        href="https://www.linkedin.com/in/renntg"
-        class="flex gap-2 items-center justify-center underline">LinkedIn</a
-      >
+      <a href="https://www.linkedin.com/in/renntg">LinkedIn</a>
     </li>
     <li>
-      <a
-        href="https://github.com/Kylo33"
-        class="flex gap-2 items-center justify-center underline">GitHub</a
-      >
+      <a href="https://github.com/Kylo33">GitHub</a>
     </li>
+    <li class="ml-auto"><a href={webring.next}>Next</a></li>
   </ul>
 </footer>
