@@ -9,16 +9,16 @@ interface Props {
 
 let { project } = Astro.props;
 const { Content } = await render(project);
+
+const dateString = project.data.pubDate.toLocaleDateString("en-US", {
+  month: "short",
+  year: "numeric",
+});
 ---
 
-<li class="grid grid-cols-4 gap-y-4">
+<li class="hidden md:grid grid-cols-4 gap-y-4">
   <div class="text-sm text-pine-dark my-auto">
-    {
-      project.data.pubDate.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      })
-    }
+    {dateString}
   </div>
   <div class="flex justify-between col-span-3 items-center">
     <h3 class="font-bold text-base">
@@ -39,6 +39,35 @@ const { Content } = await render(project);
     </div>
   </div>
   <div></div>
+  <div
+    class="col-span-3 prose prose-p:text-pine-dark prose-sm prose-p:text-base/8 prose-p:my-2 max-w-none"
+  >
+    <Content />
+  </div>
+</li>
+
+<li class="md:hidden flex flex-col gap-y-4">
+  <div class="flex items-center justify-between">
+    <h3 class="font-bold text-base">
+      <a
+        href={project.data.link}
+        class="underline text-pine flex items-center gap-2"
+        >{project.data.title}<ExternalLink size={18} /></a
+      >
+    </h3>
+    <div class="text-sm text-pine-dark my-auto">
+      {dateString}
+    </div>
+  </div>
+  <div class="flex gap-2 flex-wrap">
+    {
+      project.data.tags.map((tag) => (
+        <div class="bg-pine-muted-bg rounded-full py-1 px-4 text-sm text-pine-dark">
+          {tag}
+        </div>
+      ))
+    }
+  </div>
   <div
     class="col-span-3 prose prose-p:text-pine-dark prose-sm prose-p:text-base/8 prose-p:my-2 max-w-none"
   >

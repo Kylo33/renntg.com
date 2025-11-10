@@ -8,10 +8,17 @@ let { headerId, label } = Astro.props;
     <a
       href={`#${headerId}`}
       aria-label={label}
-      class="absolute -left-8 text-pine-muted opacity-0 group-hover:opacity-100 transition-opacity duration-250 motion-reduce:transition-none focus:opacity-100"
+      class="hidden md:inline absolute -left-8 text-pine-muted opacity-0 group-hover:opacity-100 transition-opacity duration-250 focus:opacity-100"
     >
       <Link size={24} />
     </a>
     <slot />
+    <a
+      href={`#${headerId}`}
+      aria-label={label}
+      class="md:hidden text-pine-muted"
+    >
+      <Link size={24} />
+    </a>
   </div>
 </div>

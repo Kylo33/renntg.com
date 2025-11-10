@@ -62,25 +62,19 @@ let photos = await getPhotos();
 
 <Layout>
   <header>
-    <h1 class="text-hero text-center my-24 text-pine font-header font-bold">
+    <h1
+      class="text-5xl sm:text-hero text-center my-8 sm:my-24 text-pine font-header font-bold"
+    >
       Renn Gilbert
     </h1>
   </header>
   <main>
     <section>
-      <HeadingAnchor headerId="about" label="Permalink: About">
-        <h2
-          class="text-heading font-bold text-pine font-header inline-block"
-          id="about"
-        >
-          About Me
-        </h2>
-      </HeadingAnchor>
-      <div class="float-end ml-6 mb-6 relative">
+      <div class="sm:float-end sm:ml-6 mb-6 relative flex flex-col">
         <Image
           src={portrait}
           alt="Portrait of Renn Gilbert"
-          class="aspect-square rounded-xl shadow-md object-cover max-w-80"
+          class="sm:aspect-square rounded-xl shadow-md object-cover sm:max-w-80"
           loading="eager"
         />
         <Image
@@ -96,6 +90,14 @@ let photos = await getPhotos();
           loading="eager"
         />
       </div>
+      <HeadingAnchor headerId="about" label="Permalink: About">
+        <h2
+          class="text-heading font-bold text-pine font-header inline-block"
+          id="about"
+        >
+          About Me
+        </h2>
+      </HeadingAnchor>
       <p class="text-pine-dark text-base/8 mb-4">
         Hi, I'm an undergraduate computer science student from Centennial, CO,
         currently studying at the Colorado School of Mines. I spend my free time
