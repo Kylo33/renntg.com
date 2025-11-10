@@ -3,15 +3,15 @@ import { Link } from "@lucide/astro";
 let { headerId, label } = Astro.props;
 ---
 
-<div class="-translate-x-10 inline-block mb-6 group">
+<div class="inline-block mb-6 group relative">
   <div class="flex gap-4 items-center">
     <a
       href={`#${headerId}`}
       aria-label={label}
-      class="text-pine-muted opacity-0 group-hover:opacity-100 transition-opacity duration-250 focus:opacity-100"
+      class="absolute -left-8 text-pine-muted opacity-0 group-hover:opacity-100 transition-opacity duration-250 motion-reduce:transition-none focus:opacity-100"
     >
-      <Link size={24} /></a
-    >
+      <Link size={24} />
+    </a>
     <slot />
   </div>
 </div>

@@ -1,6 +1,4 @@
 ---
-import { Link } from "@lucide/astro";
-
 import { getCollection } from "astro:content";
 import { Image, getImage } from "astro:assets";
 
@@ -15,33 +13,51 @@ import portrait from "../assets/portrait.jpg";
 import top_left_tape from "../assets/tape/top_left.png";
 import bottom_right_tape from "../assets/tape/bottom_right.png";
 
-import { ColumnsPhotoAlbum } from "react-photo-album";
 import "react-photo-album/columns.css";
 import PhotoAlbum from "../components/PhotoAlbum";
-import { glob } from "astro/loaders";
+import exifr from "exifr";
 
 const projects = await getCollection("projects");
 
-let image_paths = import.meta.glob<{ default: ImageMetadata }>(
-  "/src/assets/photos/**/*.*"
-);
+async function getPhotos() {
+  let image_paths = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/photos/**/*.*"
+  );
 
-let photos = await Promise.all(
-  Object.values(image_paths).map(async (img) => {
-    const original = (await img()).default;
-    const optimized = await getImage({
-      src: original,
-      width: 1200,
-      format: "webp",
-      quality: 80,
-    });
-    return {
-      ...optimized,
-      width: original.width,
-      height: original.height,
-    };
-  })
-);
+  let image_with_data = await Promise.all(
+    Object.entries(image_paths).map(async ([path, image]) => {
+      return { image, data: await exifr.parse(path.slice(1)) };
+    })
+  );
+
+  let sorted_images = image_with_data
+    .sort(
+      (a, b) =>
+        new Date(a.data.CreateDate).getTime() -
+        new Date(b.data.CreateDate).getTime()
+    )
+    .reverse()
+    .map(({ image }) => image);
+
+  return await Promise.all(
+    sorted_images.map(async (img) => {
+      const original = (await img()).default;
+      const optimized = await getImage({
+        src: original,
+        width: 1200,
+        format: "webp",
+        quality: 80,
+      });
+      return {
+        ...optimized,
+        width: original.width,
+        height: original.height,
+      };
+    })
+  );
+}
+
+let photos = await getPhotos();
 ---
 
 <Layout>
@@ -83,7 +99,10 @@ let photos = await Promise.all(
       <p class="text-pine-dark text-base/8 mb-4">
         Hi, I'm an undergraduate computer science student from Centennial, CO,
         currently studying at the Colorado School of Mines. I spend my free time
-        running, practicing speedcubing, and building interesting software!
+        running, <a
+          href="https://www.worldcubeassociation.org/persons/2019GILB03"
+          class="text-pine underline">practicing speedcubing</a
+        >, and building interesting software!
       </p>
       <p class="text-pine-dark text-base/8">
         I love attending hackathons (check out my <a

@@ -1,5 +1,5 @@
-import { ColumnsPhotoAlbum } from "react-photo-album";
-import "react-photo-album/columns.css";
+import { RowsPhotoAlbum } from "react-photo-album";
+import "react-photo-album/rows.css";
 
 interface Photo {
   src: string;
@@ -9,7 +9,7 @@ interface Photo {
 
 export default function PhotoGallery({ photos }: { photos: Photo[] }) {
   return (
-    <ColumnsPhotoAlbum
+    <RowsPhotoAlbum
       photos={photos}
       render={{
         image: (props) => <img {...props} className="rounded-xl shadow-md" />,
