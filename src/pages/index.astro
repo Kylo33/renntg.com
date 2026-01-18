@@ -21,20 +21,20 @@ const projects = await getCollection("projects");
 
 async function getPhotos() {
   let image_paths = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/photos/**/*.*"
+    "/src/assets/photos/**/*.*",
   );
 
   let image_with_data = await Promise.all(
     Object.entries(image_paths).map(async ([path, image]) => {
       return { image, data: await exifr.parse(path.slice(1)) };
-    })
+    }),
   );
 
   let sorted_images = image_with_data
     .sort(
       (a, b) =>
         new Date(a.data.CreateDate).getTime() -
-        new Date(b.data.CreateDate).getTime()
+        new Date(b.data.CreateDate).getTime(),
     )
     .reverse()
     .map(({ image }) => image);
@@ -53,7 +53,7 @@ async function getPhotos() {
         width: original.width,
         height: original.height,
       };
-    })
+    }),
   );
 }
 
@@ -73,6 +73,7 @@ let photos = await getPhotos();
       <div class="sm:float-end sm:ml-6 mb-6 relative flex flex-col">
         <Image
           src={portrait}
+          layout={"constrained"}
           alt="Portrait of Renn Gilbert"
           class="sm:aspect-square rounded-xl shadow-md object-cover sm:max-w-80"
           loading="eager"
