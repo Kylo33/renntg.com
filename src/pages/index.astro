@@ -127,6 +127,7 @@ let photos = await getPhotos();
           projects
             .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime())
             .reverse()
+            .filter(a => !a.data.hidden)
             .map((project) => <ProjectDescription project={project} />)
         }
       </ul>

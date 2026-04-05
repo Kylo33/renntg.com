@@ -5,8 +5,5 @@ tags: ["JavaScript", "Compilers"]
 link: "https://tiny.renntg.com"
 ---
 
-Language and instructive tool based on Web Components that helps you create
-interactive SVG-based diagrams for teaching, built using the
-[Peggy.js](https://peggyjs.org) parser generator. 3rd place winner of
-Blasterhacks 2026.
-
+Domain-specific language for creating interactive SVG diagrams in the browser.
+Third place winner of Blasterhacks 2026.
