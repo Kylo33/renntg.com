@@ -20,127 +20,143 @@ import exifr from "exifr";
 const projects = await getCollection("projects");
 
 async function getPhotos() {
-  let image_paths = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/photos/**/*.*",
-  );
+    let image_paths = import.meta.glob<{ default: ImageMetadata }>(
+        "/src/assets/photos/**/*.*",
+    );
 
-  let image_with_data = await Promise.all(
-    Object.entries(image_paths).map(async ([path, image]) => {
-      return { image, data: await exifr.parse(path.slice(1)) };
-    }),
-  );
+    let image_with_data = await Promise.all(
+        Object.entries(image_paths).map(async ([path, image]) => {
+            return { image, data: await exifr.parse(path.slice(1)) };
+        }),
+    );
 
-  let sorted_images = image_with_data
-    .sort(
-      (a, b) =>
-        new Date(a.data.CreateDate).getTime() -
-        new Date(b.data.CreateDate).getTime(),
-    )
-    .reverse()
-    .map(({ image }) => image);
+    console.log(image_with_data[0].data)
 
-  return await Promise.all(
-    sorted_images.map(async (img) => {
-      const original = (await img()).default;
-      const optimized = await getImage({
-        src: original,
-        width: 1200,
-        format: "webp",
-        quality: 80,
-      });
-      return {
-        ...optimized,
-        width: original.width,
-        height: original.height,
-      };
-    }),
-  );
+    let sorted_images = image_with_data
+        .sort(
+            (a, b) =>
+                new Date(a.data.CreateDate).getTime() -
+                new Date(b.data.CreateDate).getTime(),
+        )
+        .reverse()
+        .map(({ image }) => image);
+
+    return await Promise.all(
+        sorted_images.map(async (img) => {
+            const original = (await img()).default;
+            const optimized = await getImage({
+                src: original,
+                width: 1200,
+                format: "webp",
+                quality: 80,
+            });
+            return {
+                ...optimized,
+                width: original.width,
+                height: original.height,
+            };
+        }),
+    );
 }
 
 let photos = await getPhotos();
 ---
 
 <Layout>
-  <header>
-    <h1
-      class="text-5xl sm:text-hero text-center my-8 sm:my-24 text-pine font-header font-bold"
-    >
-      Renn Gilbert
-    </h1>
-  </header>
-  <main>
-    <section>
-      <div class="sm:float-end sm:ml-6 mb-6 relative flex flex-col">
-        <Image
-          src={portrait}
-          layout={"constrained"}
-          alt="Portrait of Renn Gilbert"
-          class="sm:aspect-square rounded-xl shadow-md object-cover sm:max-w-80"
-          loading="eager"
-        />
-        <Image
-          src={top_left_tape}
-          alt=""
-          class="absolute -top-10 -left-10 opacity-50"
-          loading="eager"
-        />
-        <Image
-          src={bottom_right_tape}
-          alt=""
-          class="absolute -bottom-8 -right-8 opacity-50"
-          loading="eager"
-        />
-      </div>
-      <HeadingAnchor headerId="about" label="Permalink: About">
-        <h2
-          class="text-heading font-bold text-pine font-header inline-block"
-          id="about"
+    <header>
+        <h1
+            class="text-5xl sm:text-hero text-center my-8 sm:my-24 text-pine font-header font-bold"
         >
-          About Me
-        </h2>
-      </HeadingAnchor>
-      <p class="text-pine-dark text-base/8 mb-4">
-        Hi, I'm an undergraduate computer science student from Centennial, CO,
-        currently studying at the Colorado School of Mines. I spend my free time
-        running, <a
-          href="https://codeforces.com/profile/Kylo33"
-          class="text-pine underline">practicing competitive programming</a
-        >, and building interesting software!
-      </p>
-      <p class="text-pine-dark text-base/8">
-        I love attending hackathons (check out my <a
-          href="https://devpost.com/Kylo33"
-          class="text-pine underline">Devpost profile</a
-        >!) because they are an incredible way to learn new skills and meet new
-        people, and I plan to attend many more in the rest of my time at Mines.
-      </p>
-    </section>
-    <Divider />
-    <section>
-      <HeadingAnchor headerId="projects" label="Permalink: Projects">
-        <h2 class="text-heading font-bold text-pine font-header" id="projects">
-          Projects
-        </h2>
-      </HeadingAnchor>
-      <ul class="flex flex-col gap-y-4">
-        {
-          projects
-            .sort((a, b) => a.data.pubDate.getTime() - b.data.pubDate.getTime())
-            .reverse()
-            .filter(a => !a.data.hidden)
-            .map((project) => <ProjectDescription project={project} />)
-        }
-      </ul>
-    </section>
-    <Divider />
-    <section>
-      <HeadingAnchor headerId="photos" label="Permalink: Photos">
-        <h2 class="text-heading font-bold text-pine font-header" id="photos">
-          Photos
-        </h2>
-      </HeadingAnchor>
-      <PhotoAlbum photos={photos} client:load />
-    </section>
-  </main>
-  <Footer />
+            Renn Gilbert
+        </h1>
+    </header>
+    <main>
+        <section>
+            <div class="sm:float-end sm:ml-6 mb-6 relative flex flex-col">
+                <Image
+                    src={portrait}
+                    layout={"constrained"}
+                    alt="Portrait of Renn Gilbert"
+                    class="sm:aspect-square rounded-xl shadow-md object-cover sm:max-w-80"
+                    loading="eager"
+                />
+                <Image
+                    src={top_left_tape}
+                    alt=""
+                    class="absolute -top-10 -left-10 opacity-50"
+                    loading="eager"
+                />
+                <Image
+                    src={bottom_right_tape}
+                    alt=""
+                    class="absolute -bottom-8 -right-8 opacity-50"
+                    loading="eager"
+                />
+            </div>
+            <HeadingAnchor headerId="about" label="Permalink: About">
+                <h2
+                    class="text-heading font-bold text-pine font-header inline-block"
+                    id="about"
+                >
+                    About Me
+                </h2>
+            </HeadingAnchor>
+            <p class="text-pine-dark text-base/8 mb-4">
+                Hi, I'm an undergraduate computer science student from
+                Centennial, CO, currently studying at the Colorado School of
+                Mines. I spend my free time running, <a
+                    href="https://codeforces.com/profile/Kylo33"
+                    class="text-pine underline"
+                    >practicing competitive programming</a
+                >, and building interesting software!
+            </p>
+            <p class="text-pine-dark text-base/8">
+                I love attending hackathons (check out my <a
+                    href="https://devpost.com/Kylo33"
+                    class="text-pine underline">Devpost profile</a
+                >!) because they are an incredible way to learn new skills and
+                meet new people, and I plan to attend many more in the rest of
+                my time at Mines.
+            </p>
+        </section>
+        <Divider />
+        <section>
+            <HeadingAnchor headerId="projects" label="Permalink: Projects">
+                <h2
+                    class="text-heading font-bold text-pine font-header"
+                    id="projects"
+                >
+                    Projects
+                </h2>
+            </HeadingAnchor>
+            <ul class="flex flex-col gap-y-4">
+                {
+                    projects
+                        .sort(
+                            (a, b) =>
+                                a.data.pubDate.getTime() -
+                                b.data.pubDate.getTime(),
+                        )
+                        .reverse()
+                        .filter((a) => !a.data.hidden)
+                        .map((project) => (
+                            <ProjectDescription project={project} />
+                        ))
+                }
+            </ul>
+        </section>
+        <Divider />
+        <section>
+            <HeadingAnchor headerId="photos" label="Permalink: Photos">
+                <h2
+                    class="text-heading font-bold text-pine font-header"
+                    id="photos"
+                >
+                    Photos
+                </h2>
+            </HeadingAnchor>
+            <PhotoAlbum photos={photos} client:load />
+        </section>
+    </main>
+    <Footer />
 </Layout>
