@@ -41,7 +41,7 @@ resource "google_storage_bucket_iam_member" "public_rule" {
 
 resource "google_storage_bucket_object" "indexpage" {
   name         = "index.html"
-  content      = "<html><body>Hello World!</body></html>"
+  content      = "<html><body>Hi, this is Renn. My website is currently under construction, but it will be back shortly!</body></html>"
   content_type = "text/html"
   bucket       = google_storage_bucket.static_site.id
 }
