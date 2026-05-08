@@ -16,6 +16,7 @@ jobs:
     - uses: google-github-actions/auth@v3
       with:
         project_id: renntg
+        service_account: renntg-service-account@renntg.iam.gserviceaccount.com
         workload_identity_provider: projects/9489959707/locations/global/workloadIdentityPools/renntg-github/providers/renntg-github-provider
     - uses: hashicorp/setup-terraform@v4 
     - run: terraform init
