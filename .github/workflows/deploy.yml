@@ -4,7 +4,21 @@ on:
   push:
     branches: [main]
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: pnpm/action-setup@v6
+      with:
+        version: 10
+    - run: pnpm install
+    - run: pnpm run build
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-output
+        path: dist/
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -17,5 +31,20 @@ jobs:
         aws-region: us-east-1
         role-to-assume: arn:aws:iam::099660946013:role/renntg.com-github-action
     - uses: hashicorp/setup-terraform@v4 
+      with:
+        terraform_wrapper: true
     - run: terraform -chdir=infra init
     - run: terraform -chdir=infra apply -auto-approve
+    - run: echo WEBSITE_BUCKET_NAME=$(terraform output website_bucket_name) >> $GITHUB_ENV
+    - run: echo WEBSITE_BUCKET_REGION=$(terraform output website_bucket_region) >> $GITHUB_ENV
+    - uses: actions/download-artifact@v4
+      with:
+        name: build-output
+        path: dist/
+
+    - run: echo ${{ env.WEBSITE_BUCKET_NAME }}
+    - run: echo ${{ env.WEBSITE_BUCKET_REGION }}
+    # - uses: reggionick/s3-deploy@v4
+    #   with:
+    #     folder: dist/
+    #     bucket: 

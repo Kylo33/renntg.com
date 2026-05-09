@@ -51,3 +51,12 @@ resource "aws_s3_bucket_website_configuration" "default" {
   }
 }
 
+output "website_bucket_name" {
+  description = "AWS S3 Website Bucket Name"
+  value = aws_s3_bucket.static-site.bucket
+}
+
+output "website_bucket_region" {
+  description = "Region where S3 Bucket is Located"
+  value = aws_s3_bucket.static-site.bucket_region
+}
