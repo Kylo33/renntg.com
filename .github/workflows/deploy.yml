@@ -23,9 +23,6 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    defaults:
-      run:
-        working-directory: infra
     steps:
     - uses: actions/checkout@v4
     - uses: google-github-actions/auth@v3
@@ -34,12 +31,14 @@ jobs:
         service_account: renntg-service-account@renntg.iam.gserviceaccount.com
         workload_identity_provider: projects/9489959707/locations/global/workloadIdentityPools/renntg-github/providers/renntg-github-provider
     - uses: hashicorp/setup-terraform@v4 
-    - run: terraform init
-    - run: terraform apply -auto-approve
+    - run: terraform -chdir=infra init
+    - run: terraform -chdir=infra apply -auto-approve
     - uses: actions/download-artifact@v4
       with:
         name: build-output
+        path: dist/
     - uses: google-github-actions/upload-cloud-storage@v3
       with:
         path: dist
         destination: renntg.com
+        parent: false
