@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
   backend "s3" {
     bucket = "renntg.com-tfstate-099660946013-us-east-1-an"
@@ -16,10 +20,15 @@ provider "aws" {
   region = "us-east-1"
 }
 
+provider "cloudflare" {}
+
+# S3 Website Bucket
+
 resource "aws_s3_bucket" "static-site" {
-  bucket_namespace = "account-regional"
+  bucket = "renntg.com"
   force_destroy    = true
 }
+
 
 resource "aws_s3_bucket_public_access_block" "default" {
   bucket = aws_s3_bucket.static-site.id
@@ -53,10 +62,24 @@ resource "aws_s3_bucket_website_configuration" "default" {
 
 output "website_bucket_name" {
   description = "AWS S3 Website Bucket Name"
-  value = aws_s3_bucket.static-site.bucket
+  value       = aws_s3_bucket.static-site.bucket
 }
 
 output "website_bucket_region" {
   description = "Region where S3 Bucket is Located"
-  value = aws_s3_bucket.static-site.bucket_region
+  value       = aws_s3_bucket.static-site.bucket_region
+}
+
+# WWW redirect
+
+resource "aws_s3_bucket" "www" {
+  bucket = "www.renntg.com"
+  force_destroy    = true
+}
+
+resource "aws_s3_bucket_website_configuration" "www" {
+  bucket = aws_s3_bucket.www.id
+  redirect_all_requests_to {
+    host_name = "renntg.com"
+  }
 }
