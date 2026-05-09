@@ -1,4 +1,5 @@
 name: Deploy to GCP
+
 on:
   push:
     branches: [main]
@@ -37,8 +38,4 @@ jobs:
       with:
         name: build-output
         path: dist/
-    - uses: google-github-actions/upload-cloud-storage@v3
-      with:
-        path: dist
-        destination: renntg.com
-        parent: false
+    - run: gcloud storage rsync -r --delete-unmatched-destination-objects dist gs://renntg.com/
