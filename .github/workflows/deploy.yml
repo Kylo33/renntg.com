@@ -41,10 +41,10 @@ jobs:
       with:
         name: build-output
         path: dist/
-
-    - run: echo ${{ env.WEBSITE_BUCKET_NAME }}
-    - run: echo ${{ env.WEBSITE_BUCKET_REGION }}
-    # - uses: reggionick/s3-deploy@v4
-    #   with:
-    #     folder: dist/
-    #     bucket: 
+    - uses: reggionick/s3-deploy@v4
+      with:
+        folder: dist/
+        bucket: ${{ env.WEBSITE_BUCKET_NAME }}
+        bucket-region: ${{ env.WEBSITE_BUCKET_REGION }}
+        delete-removed: true
+        private: true
