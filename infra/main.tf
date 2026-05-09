@@ -25,10 +25,9 @@ provider "cloudflare" {}
 # S3 Website Bucket
 
 resource "aws_s3_bucket" "static-site" {
-  bucket = "renntg.com"
-  force_destroy    = true
+  bucket        = "renntg.com"
+  force_destroy = true
 }
-
 
 resource "aws_s3_bucket_public_access_block" "default" {
   bucket = aws_s3_bucket.static-site.id
@@ -73,8 +72,8 @@ output "website_bucket_region" {
 # WWW redirect
 
 resource "aws_s3_bucket" "www" {
-  bucket = "www.renntg.com"
-  force_destroy    = true
+  bucket        = "www.renntg.com"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_website_configuration" "www" {
@@ -82,4 +81,32 @@ resource "aws_s3_bucket_website_configuration" "www" {
   redirect_all_requests_to {
     host_name = "renntg.com"
   }
+}
+
+# DNS
+
+data "cloudflare_zone" "renntg" {
+  filter = {
+    name = "renntg.com"
+  }
+}
+
+resource "cloudflare_dns_record" "default" {
+  name    = "renntg.com"
+  type    = "CNAME"
+  content = aws_s3_bucket_website_configuration.default.website_endpoint
+
+  ttl     = 1
+  proxied = true
+  zone_id = data.cloudflare_zone.renntg.id
+}
+
+resource "cloudflare_dns_record" "www" {
+  name    = "www"
+  type    = "CNAME"
+  content = aws_s3_bucket_website_configuration.www.website_endpoint
+
+  ttl     = 1
+  proxied = true
+  zone_id = data.cloudflare_zone.renntg.id
 }
