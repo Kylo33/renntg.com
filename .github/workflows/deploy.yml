@@ -35,8 +35,8 @@ jobs:
         terraform_wrapper: true
     - run: terraform -chdir=infra init
     - run: terraform -chdir=infra apply -auto-approve
-    - run: echo WEBSITE_BUCKET_NAME=$(terraform output website_bucket_name) >> $GITHUB_ENV
-    - run: echo WEBSITE_BUCKET_REGION=$(terraform output website_bucket_region) >> $GITHUB_ENV
+    - run: echo WEBSITE_BUCKET_NAME=$(terraform -chdir=infra output -raw website_bucket_name) >> $GITHUB_ENV
+    - run: echo WEBSITE_BUCKET_REGION=$(terraform -chdir=infra output -raw website_bucket_region) >> $GITHUB_ENV
     - uses: actions/download-artifact@v4
       with:
         name: build-output
