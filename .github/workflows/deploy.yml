@@ -1,41 +1,20 @@
-name: Deploy to GCP
+name: Deploy to AWS
 
 on:
   push:
     branches: [main]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
-    - uses: pnpm/action-setup@v6
-      with:
-        version: 10
-    - run: pnpm install
-    - run: pnpm run build
-    - uses: actions/upload-artifact@v4
-      with:
-        name: build-output
-        path: dist/
-
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
-    - uses: actions/checkout@v4
-    - uses: google-github-actions/auth@v3
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6.1.0
       with:
-        project_id: renntg
-        service_account: renntg-service-account@renntg.iam.gserviceaccount.com
-        workload_identity_provider: projects/9489959707/locations/global/workloadIdentityPools/renntg-github/providers/renntg-github-provider
+        aws-region: us-east-1
+        role-to-assume: arn:aws:iam::099660946013:role/renntg.com-github-action
     - uses: hashicorp/setup-terraform@v4 
     - run: terraform -chdir=infra init
     - run: terraform -chdir=infra apply -auto-approve
-    - uses: actions/download-artifact@v4
-      with:
-        name: build-output
-        path: dist/
-    - run: gcloud storage rsync -r --delete-unmatched-destination-objects dist gs://renntg.com/
