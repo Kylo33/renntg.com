@@ -1,9 +1,17 @@
-name: Terraform Apply
+name: Deploy to GCP
 on:
   push:
     branches: [main]
 jobs:
-  terraform:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: pnpm/action-setup@v6
+    - run: pnpm install
+    - run: pnpm run build
+
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,3 +29,7 @@ jobs:
     - uses: hashicorp/setup-terraform@v4 
     - run: terraform init
     - run: terraform apply -auto-approve
+    - uses: google-github-actions/upload-cloud-storage@v3
+      with:
+        path: dist
+        destination: renntg.com

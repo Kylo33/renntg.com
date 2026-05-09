@@ -39,13 +39,6 @@ resource "google_storage_bucket_iam_member" "public_rule" {
   member = "allUsers"
 }
 
-resource "google_storage_bucket_object" "indexpage" {
-  name         = "index.html"
-  content      = "<html><body>Hi, this is Renn. My website is currently under construction, but it will be back shortly!</body></html>"
-  content_type = "text/html"
-  bucket       = google_storage_bucket.static_site.id
-}
-
 resource "google_compute_backend_bucket" "static_site" {
   name        = "static-site-backend"
   bucket_name = google_storage_bucket.static_site.name
