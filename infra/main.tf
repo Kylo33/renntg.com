@@ -26,14 +26,15 @@ resource "aws_s3_bucket_public_access_block" "default" {
 }
 
 resource "aws_s3_bucket_policy" "public-read" {
-  bucket = aws_s3_bucket.static-site.id
-  policy = data.aws_iam_policy_document.public-read-get-object.json
+  bucket     = aws_s3_bucket.static-site.id
+  policy     = data.aws_iam_policy_document.public-read-get-object.json
+  depends_on = [aws_s3_bucket_public_access_block.default]
 }
 
 data "aws_iam_policy_document" "public-read-get-object" {
   statement {
-    effect = "Allow"
-    actions = ["s3:GetObject"]
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.static-site.arn}/*"]
 
     principals {
