@@ -8,10 +8,13 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - uses: pnpm/action-setup@v6
+      with:
+        version: 10
     - run: pnpm install
     - run: pnpm run build
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
