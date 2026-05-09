@@ -16,3 +16,37 @@ provider "aws" {
   region = "us-east-1"
 }
 
+resource "aws_s3_bucket" "static-site" {
+  bucket_namespace = "account-regional"
+  force_destroy    = true
+}
+
+resource "aws_s3_bucket_public_access_block" "default" {
+  bucket = aws_s3_bucket.static-site.id
+}
+
+resource "aws_s3_bucket_policy" "public-read" {
+  bucket = aws_s3_bucket.static-site.id
+  policy = data.aws_iam_policy_document.public-read-get-object.json
+}
+
+data "aws_iam_policy_document" "public-read-get-object" {
+  statement {
+    effect = "Allow"
+    actions = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.static-site.arn}/*"]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_website_configuration" "default" {
+  bucket = aws_s3_bucket.static-site.id
+  index_document {
+    suffix = "index.html"
+  }
+}
+
