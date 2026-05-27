@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from "astro:content";
+import TagList from "./TagList.astro";
+
+interface Props {
+    post: CollectionEntry<"blog">;
+    num: number;
+}
+let { post, num } = Astro.props;
+
+const dateString = post.data.pubDate.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+});
+---
+
+<div class="text-sm text-pine-dark">
+    <!-- #{num.toString().padStart(3, "0")} -->
+    {dateString}
+</div>
+<h3 class="text-base font-bold text-pine mr-auto">
+    <a href={`/blog/${post.id}`} class="text-pine flex items-center gap-2"
+        >{post.data.title}</a
+    >
+</h3>

@@ -4,6 +4,7 @@ import { Image, getImage } from "astro:assets";
 
 import Layout from "../layouts/Layout.astro";
 
+import BlogPostCard from "../components/BlogPostCard.astro";
 import Divider from "../components/Divider.astro";
 import HeadingAnchor from "../components/HeadingAnchor.astro";
 import ProjectDescription from "../components/ProjectDescription.astro";
@@ -18,6 +19,7 @@ import PhotoAlbum from "../components/PhotoAlbum";
 import exifr from "exifr";
 
 const projects = await getCollection("projects");
+const blog = await getCollection("blog");
 
 async function getPhotos() {
     let image_paths = import.meta.glob<{ default: ImageMetadata }>(
@@ -116,6 +118,30 @@ let photos = await getPhotos();
                 meet new people, and I plan to attend many more in the rest of
                 my time at Mines.
             </p>
+        </section>
+        <Divider />
+        <section>
+            <HeadingAnchor headerId="blog" label="Permalink: Blog Posts">
+                <h2
+                    class="text-heading font-bold text-pine font-header"
+                    id="blog"
+                >
+                    Blog Posts
+                </h2>
+            </HeadingAnchor>
+            <div class="grid grid-cols-[auto_1fr] items-center gap-x-8 gap-y-4 mb-8">
+                {
+                    blog
+                        .sort(
+                            (a, b) =>
+                                a.data.pubDate.getTime() -
+                                b.data.pubDate.getTime(),
+                        )
+                        .reverse()
+                        .slice(0, 3)
+                        .map((post, num) => <BlogPostCard post={post} num={3 - num} />)
+                }
+            </div>
         </section>
         <Divider />
         <section>

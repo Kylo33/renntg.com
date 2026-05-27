@@ -3,6 +3,8 @@ import { ExternalLink } from "@lucide/astro";
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 
+import TagList from "../components/TagList.astro";
+
 interface Props {
   project: CollectionEntry<"projects">;
 }
@@ -29,13 +31,7 @@ const dateString = project.data.pubDate.toLocaleDateString("en-US", {
       >
     </h3>
     <div class="flex gap-2">
-      {
-        project.data.tags.map((tag) => (
-          <div class="bg-pine-muted-bg rounded-full py-1 px-4 text-sm text-pine-dark">
-            {tag}
-          </div>
-        ))
-      }
+      <TagList tags={project.data.tags} />
     </div>
   </div>
   <div></div>
@@ -59,15 +55,7 @@ const dateString = project.data.pubDate.toLocaleDateString("en-US", {
       {dateString}
     </div>
   </div>
-  <div class="flex gap-2 flex-wrap">
-    {
-      project.data.tags.map((tag) => (
-        <div class="bg-pine-muted-bg rounded-full py-1 px-4 text-sm text-pine-dark">
-          {tag}
-        </div>
-      ))
-    }
-  </div>
+  <TagList tags={project.data.tags} />
   <div
     class="col-span-3 prose prose-p:text-pine-dark prose-sm prose-p:text-base/8 prose-p:my-2 max-w-none"
   >
