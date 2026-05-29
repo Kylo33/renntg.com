@@ -15,18 +15,18 @@ jobs:
     - run: pnpm run build
     - uses: actions/upload-artifact@v4
       with:
-        name: build-output
+        name: site-output
         path: dist/
   compile-resume:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
     - uses: typst-community/setup-typst@v5
-    - run: typst compile resume/resume.typ resume/resume.pdf
+    - run: typst compile resume/resume.typ resume/index.pdf
     - uses: actions/upload-artifact@v4
       with:
-        name: resume-pdf
-        path: resume/resume.pdf
+        name: resume
+        path: resume/index.pdf
   deploy:
     needs: [build-site, compile-resume]
     runs-on: ubuntu-latest
@@ -47,16 +47,29 @@ jobs:
         terraform_wrapper: true
     - run: terraform -chdir=infra init
     - run: terraform -chdir=infra apply -auto-approve
+    - run: echo RESUME_BUCKET_NAME=$(terraform -chdir=infra output -raw resume_bucket_name) >> $GITHUB_ENV
+    - run: echo RESUME_BUCKET_REGION=$(terraform -chdir=infra output -raw resume_bucket_region) >> $GITHUB_ENV
     - run: echo WEBSITE_BUCKET_NAME=$(terraform -chdir=infra output -raw website_bucket_name) >> $GITHUB_ENV
     - run: echo WEBSITE_BUCKET_REGION=$(terraform -chdir=infra output -raw website_bucket_region) >> $GITHUB_ENV
     - uses: actions/download-artifact@v4
       with:
-        name: build-output
+        name: site-output
         path: dist/
     - uses: reggionick/s3-deploy@v4
       with:
         folder: dist/
         bucket: ${{ env.WEBSITE_BUCKET_NAME }}
         bucket-region: ${{ env.WEBSITE_BUCKET_REGION }}
+        delete-removed: true
+        private: true
+    - uses: actions/download-artifact@v4
+      with:
+        name: resume
+        path: resume-output/
+    - uses: reggionick/s3-deploy@v4
+      with:
+        folder: resume-output/
+        bucket: ${{ env.RESUME_BUCKET_NAME }}
+        bucket-region: ${{ env.RESUME_BUCKET_REGION }}
         delete-removed: true
         private: true

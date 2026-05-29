@@ -107,13 +107,19 @@ resource "aws_s3_bucket_website_configuration" "resume" {
 }
 
 output "website_bucket_name" {
-  description = "AWS S3 Website Bucket Name"
   value       = aws_s3_bucket.static-site.bucket
 }
 
 output "website_bucket_region" {
-  description = "Region where S3 Bucket is Located"
   value       = aws_s3_bucket.static-site.bucket_region
+}
+
+output "resume_bucket_name" {
+  value       = aws_s3_bucket.resume.bucket
+}
+
+output "resume_bucket_region" {
+  value       = aws_s3_bucket.resume.bucket_region
 }
 
 # WWW redirect
