@@ -29,6 +29,11 @@ variable "domain_name" {
   default = "renntg.com"
 }
 
+variable "resume_subdomain" {
+  type    = string
+  default = "resume"
+}
+
 # S3 Website Bucket
 
 resource "aws_s3_bucket" "static-site" {
@@ -46,11 +51,26 @@ resource "aws_s3_bucket_policy" "public-read" {
   depends_on = [aws_s3_bucket_public_access_block.default]
 }
 
+resource "aws_s3_bucket" "resume" {
+  bucket        = "${var.resume_subdomain}.${var.domain_name}"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_public_access_block" "resume" {
+  bucket = aws_s3_bucket.resume.id
+}
+
+resource "aws_s3_bucket_policy" "resume-public-read" {
+  bucket     = aws_s3_bucket.resume.id
+  policy     = data.aws_iam_policy_document.public-read-get-object.json
+  depends_on = [aws_s3_bucket_public_access_block.resume]
+}
+
 data "aws_iam_policy_document" "public-read-get-object" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.static-site.arn}/*"]
+    resources = ["${aws_s3_bucket.static-site.arn}/*", "${aws_s3_bucket.resume.arn}/*"]
 
     principals {
       type        = "*"
@@ -87,6 +107,18 @@ resource "aws_s3_bucket_website_configuration" "www" {
   bucket = aws_s3_bucket.www.id
   redirect_all_requests_to {
     host_name = var.domain_name
+  }
+}
+
+resource "aws_s3_bucket" "www-resume" {
+  bucket        = "www.${var.resume_subdomain}.${var.domain_name}"
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_website_configuration" "www" {
+  bucket = aws_s3_bucket.www.id
+  redirect_all_requests_to {
+    host_name = "${var.resume_subdomain}.${var.domain_name}"
   }
 }
 

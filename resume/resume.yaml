@@ -1,0 +1,112 @@
+name: Renn Gilbert
+email: renn_gilbert@mines.edu
+phone: +1 (720) 226-4355
+location: Centennial, CO
+website: renntg.com
+github: github.com/Kylo33
+
+skills:
+  - category: Languages
+    items: [Python, Java, JavaScript, C, C++, Golang, SQL, HTML/CSS]
+  - category: Frameworks
+    items: [React, React Native, FastAPI, Laravel]
+  - category: Tools
+    items: [Git, Docker, Linux, Visual Studio Code, IntelliJ, Neovim]
+
+education:
+  - institution: Colorado School of Mines
+    location: Golden, CO
+    start_date: 2024-08
+    end_date: 2026-12
+    degree: Bachelor of Science in Computer Science
+    gpa: "4.0"
+    extra:
+      - Dean's List, All Terms
+  - institution: Arapahoe Community College
+    location: Littleton, CO
+    start_date: 2022-08
+    end_date: 2024-05
+    degree: Concurrent Enrollment Coursework in Computer Science
+    gpa: "4.0"
+    extra:
+      - Dean's List, All Terms
+
+work:
+  - title: Teaching Assistant (Data Structures and Algorithms)
+    company: Colorado School of Mines
+    location: Golden, CO
+    start_date: 2025-01
+    end_date: 2026-05
+    extra:
+      - |
+        Overseeing weekly office hours to strengthen students'
+        problem-solving, debugging, and algorithm analysis skills, ensuring
+        effective application of data structures and algorithms in coursework
+      - |
+        Delivering valuable feedback to students from over 200 student-written
+        analysis projects by highlighting strengths, identifying mistakes, and
+        helping students develop problem-solving skills
+
+  - title: Shift Manager
+    company: Jimmy John's
+    location: Littleton, CO
+    start_date: 2022-05
+    end_date: 2025-08
+    extra:
+      - |
+        Displayed efficient problem-solving skills in a collaborative,
+        fast-paced, high-pressure environment, cultivating an organized
+        professional workplace
+      - |
+        Oversaw store closing procedures, including delegating tasks to team
+        members, preparing food, and ensuring compliance with safety and
+        cleanliness standards
+      - |
+        Resolved customer service issues and conflict professionally,
+        resulting in positive relationships with customers
+
+projects:
+  - name: Tiny Layout
+    url: tiny.renntg.com
+    tags: [JavaScript]
+    date: 2026-04
+    extra:
+      - |
+        Designed a custom grammar and compiler pipeline for a
+        domain-specific language that compiles to JavaScript using
+        [Peggy.js](https://peggyjs.org/) for creating interactive SVG
+        diagrams in the browser as Web Components to make impactful
+        technical writing for the web more accessible, winning **third
+        place at Blasterhacks 2026**.
+  - name: Math Sandbox
+    url: pdx.land/math-sandbox
+    tags: [Python, OpenCV]
+    date: 2025-10
+    extra:
+      - |
+        Created an interactive projector-camera graphing platform that turns
+        physical paper into a  workspace, enabling students to collaboratively
+        explore math concepts without relying on individual screens
+      - |
+        Engineered a real-time vision system using OpenCV for homography
+        calibration and ArUco marker detection, powering accurate equation
+        recognition and graphing, that **won first place in the Invent Track at
+        DubHacks 2025**
+  - name: yHealth
+    url: github.com/Kylo33/yhealth
+    tags: [Python, React Native, Arduino]
+    date: 2025-04
+    extra:
+      - |
+        Developed a cross-platform React Native mobile health education
+        application that integrates with a custom Arduino-based CPR simulation
+        device
+      - |
+        Implemented real-time communication with WebSockets between Arduino
+        sensors and the mobile application, enabling immediate user feedback
+        to improve CPR performance accuracy
+      - |
+        Coordinated stakeholder interviews to iterate on the application and
+        to make key design decisions, resulting in a compelling project that
+        won the **first place scholarship award** in the Spring 2025
+        Cornerstone Design Competition
