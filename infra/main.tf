@@ -62,7 +62,7 @@ resource "aws_s3_bucket_public_access_block" "resume" {
 
 resource "aws_s3_bucket_policy" "resume-public-read" {
   bucket     = aws_s3_bucket.resume.id
-  policy     = data.aws_iam_policy_document.public-read-get-object.json
+  policy     = data.aws_iam_policy_document.resume-public-read-get-object.json
   depends_on = [aws_s3_bucket_public_access_block.resume]
 }
 
@@ -70,7 +70,20 @@ data "aws_iam_policy_document" "public-read-get-object" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.static-site.arn}/*", "${aws_s3_bucket.resume.arn}/*"]
+    resources = ["${aws_s3_bucket.static-site.arn}/*"]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "resume-public-read-get-object" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.resume.arn}/*"]
 
     principals {
       type        = "*"
@@ -83,6 +96,13 @@ resource "aws_s3_bucket_website_configuration" "default" {
   bucket = aws_s3_bucket.static-site.id
   index_document {
     suffix = "index.html"
+  }
+}
+
+resource "aws_s3_bucket_website_configuration" "resume" {
+  bucket = aws_s3_bucket.resume.id
+  index_document {
+    suffix = "index.pdf"
   }
 }
 
@@ -110,18 +130,6 @@ resource "aws_s3_bucket_website_configuration" "www" {
   }
 }
 
-resource "aws_s3_bucket" "www-resume" {
-  bucket        = "www.${var.resume_subdomain}.${var.domain_name}"
-  force_destroy = true
-}
-
-resource "aws_s3_bucket_website_configuration" "www" {
-  bucket = aws_s3_bucket.www.id
-  redirect_all_requests_to {
-    host_name = "${var.resume_subdomain}.${var.domain_name}"
-  }
-}
-
 # DNS
 
 data "cloudflare_zone" "main" {
@@ -144,6 +152,16 @@ resource "cloudflare_dns_record" "www" {
   name    = "www"
   type    = "CNAME"
   content = aws_s3_bucket_website_configuration.www.website_endpoint
+
+  ttl     = 1
+  proxied = true
+  zone_id = data.cloudflare_zone.main.id
+}
+
+resource "cloudflare_dns_record" "resume" {
+  name    = "${var.resume_subdomain}"
+  type    = "CNAME"
+  content = aws_s3_bucket_website_configuration.resume.website_endpoint
 
   ttl     = 1
   proxied = true
