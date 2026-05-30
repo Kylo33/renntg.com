@@ -22,16 +22,10 @@ provider "aws" {
 
 provider "cloudflare" {}
 
-# Variables
-
-variable "domain_name" {
-  type    = string
-  default = "renntg.com"
-}
-
-variable "resume_subdomain" {
-  type    = string
-  default = "resume"
+data "cloudflare_zone" "main" {
+  filter = {
+    name = var.domain_name
+  }
 }
 
 # S3 Website Bucket
@@ -41,32 +35,17 @@ resource "aws_s3_bucket" "static-site" {
   force_destroy = true
 }
 
-resource "aws_s3_bucket_public_access_block" "default" {
+resource "aws_s3_bucket_public_access_block" "static-site" {
   bucket = aws_s3_bucket.static-site.id
 }
 
-resource "aws_s3_bucket_policy" "public-read" {
+resource "aws_s3_bucket_policy" "static-site-public-read" {
   bucket     = aws_s3_bucket.static-site.id
-  policy     = data.aws_iam_policy_document.public-read-get-object.json
-  depends_on = [aws_s3_bucket_public_access_block.default]
+  policy     = data.aws_iam_policy_document.static-site-public-read-get-object.json
+  depends_on = [aws_s3_bucket_public_access_block.static-site]
 }
 
-resource "aws_s3_bucket" "resume" {
-  bucket        = "${var.resume_subdomain}.${var.domain_name}"
-  force_destroy = true
-}
-
-resource "aws_s3_bucket_public_access_block" "resume" {
-  bucket = aws_s3_bucket.resume.id
-}
-
-resource "aws_s3_bucket_policy" "resume-public-read" {
-  bucket     = aws_s3_bucket.resume.id
-  policy     = data.aws_iam_policy_document.resume-public-read-get-object.json
-  depends_on = [aws_s3_bucket_public_access_block.resume]
-}
-
-data "aws_iam_policy_document" "public-read-get-object" {
+data "aws_iam_policy_document" "static-site-public-read-get-object" {
   statement {
     effect    = "Allow"
     actions   = ["s3:GetObject"]
@@ -79,47 +58,21 @@ data "aws_iam_policy_document" "public-read-get-object" {
   }
 }
 
-data "aws_iam_policy_document" "resume-public-read-get-object" {
-  statement {
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.resume.arn}/*"]
-
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_website_configuration" "default" {
+resource "aws_s3_bucket_website_configuration" "static-site" {
   bucket = aws_s3_bucket.static-site.id
   index_document {
     suffix = "index.html"
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "resume" {
-  bucket = aws_s3_bucket.resume.id
-  index_document {
-    suffix = "index.pdf"
-  }
-}
+resource "cloudflare_dns_record" "static-site" {
+  name    = var.domain_name
+  type    = "CNAME"
+  content = aws_s3_bucket_website_configuration.static-site.website_endpoint
 
-output "website_bucket_name" {
-  value       = aws_s3_bucket.static-site.bucket
-}
-
-output "website_bucket_region" {
-  value       = aws_s3_bucket.static-site.bucket_region
-}
-
-output "resume_bucket_name" {
-  value       = aws_s3_bucket.resume.bucket
-}
-
-output "resume_bucket_region" {
-  value       = aws_s3_bucket.resume.bucket_region
+  ttl     = 1
+  proxied = true
+  zone_id = data.cloudflare_zone.main.id
 }
 
 # WWW redirect
@@ -136,38 +89,10 @@ resource "aws_s3_bucket_website_configuration" "www" {
   }
 }
 
-# DNS
-
-data "cloudflare_zone" "main" {
-  filter = {
-    name = var.domain_name
-  }
-}
-
-resource "cloudflare_dns_record" "default" {
-  name    = var.domain_name
-  type    = "CNAME"
-  content = aws_s3_bucket_website_configuration.default.website_endpoint
-
-  ttl     = 1
-  proxied = true
-  zone_id = data.cloudflare_zone.main.id
-}
-
 resource "cloudflare_dns_record" "www" {
   name    = "www"
   type    = "CNAME"
   content = aws_s3_bucket_website_configuration.www.website_endpoint
-
-  ttl     = 1
-  proxied = true
-  zone_id = data.cloudflare_zone.main.id
-}
-
-resource "cloudflare_dns_record" "resume" {
-  name    = "${var.resume_subdomain}"
-  type    = "CNAME"
-  content = aws_s3_bucket_website_configuration.resume.website_endpoint
 
   ttl     = 1
   proxied = true
