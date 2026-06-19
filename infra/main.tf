@@ -28,11 +28,19 @@ data "cloudflare_zone" "main" {
   }
 }
 
+# myApplication
+
+resource "aws_servicecatalogappregistry_application" "personal_website" {
+  name = "renntg.com"
+  description = "Personal Website and Portfolio"
+}
+
 # S3 Website Bucket
 
 resource "aws_s3_bucket" "static-site" {
   bucket        = var.domain_name
   force_destroy = true
+  tags = aws_servicecatalogappregistry_application.personal_website.application_tag
 }
 
 resource "aws_s3_bucket_public_access_block" "static-site" {
@@ -80,6 +88,7 @@ resource "cloudflare_dns_record" "static-site" {
 resource "aws_s3_bucket" "www" {
   bucket        = "www.${var.domain_name}"
   force_destroy = true
+  tags = aws_servicecatalogappregistry_application.personal_website.application_tag
 }
 
 resource "aws_s3_bucket_website_configuration" "www" {
@@ -98,3 +107,4 @@ resource "cloudflare_dns_record" "www" {
   proxied = true
   zone_id = data.cloudflare_zone.main.id
 }
+

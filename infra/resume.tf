@@ -1,6 +1,11 @@
+resource "aws_servicecatalogappregistry_application" "resume" {
+  name = "resume"
+}
+
 resource "aws_s3_bucket" "resume" {
   bucket        = "${var.resume_subdomain}.${var.domain_name}"
   force_destroy = true
+  tags = aws_servicecatalogappregistry_application.resume.application_tag
 }
 
 resource "aws_s3_bucket_public_access_block" "resume" {
