@@ -7,11 +7,26 @@ github: github.com/Kylo33
 
 skills:
   - category: Languages
-    items: [Python, Java, JavaScript, C, C++, Golang, SQL, HTML/CSS]
+    items: 
+      - C
+      - C++
+      - Golang
+      - Java
+      - JavaScript
+      - Python
+      - SQL
   - category: Frameworks
-    items: [React, React Native, FastAPI, Laravel]
+    items: 
+      - FastAPI
+      - React
+      - React Native
   - category: Tools
-    items: [Git, Docker, Linux, Visual Studio Code, IntelliJ, Neovim]
+    items:
+      - Docker
+      - Git
+      - Linux
+      - Neovim
+      - OpenCV
 
 education:
   - institution: Colorado School of Mines
@@ -32,6 +47,22 @@ education:
       - Dean's List, All Terms
 
 work:
+  - title: Software Engineer Intern
+    company: Capital One
+    location: McLean, VA
+    start_date: 2026-06
+    end_date: 2026-08
+    extra:
+      - |
+        Independently engineered an end-to-end model training pipeline on
+        Kubeflow Pipelines to train ML models to predict the wait time to enter
+        each of Capital One's airport lounges using queue position,
+        temporal features, and rolling queue-throughput metrics
+      - |
+        Scaffolded a production-ready business component from scratch by
+        creating a new repository, configuring CI/CD, and deploying an IAM
+        role in production that allows the pipeline to securely read
+        Snowflake data and publish model artifacts to Artifactory
   - title: Teaching Assistant (Data Structures and Algorithms)
     company: Colorado School of Mines
     location: Golden, CO
@@ -46,24 +77,6 @@ work:
         Delivering valuable feedback to students from over 200 student-written
         analysis projects by highlighting strengths, identifying mistakes, and
         helping students develop problem-solving skills
-
-  - title: Shift Manager
-    company: Jimmy John's
-    location: Littleton, CO
-    start_date: 2022-05
-    end_date: 2025-08
-    extra:
-      - |
-        Displayed efficient problem-solving skills in a collaborative,
-        fast-paced, high-pressure environment, cultivating an organized
-        professional workplace
-      - |
-        Oversaw store closing procedures, including delegating tasks to team
-        members, preparing food, and ensuring compliance with safety and
-        cleanliness standards
-      - |
-        Resolved customer service issues and conflict professionally,
-        resulting in positive relationships with customers
 
 projects:
   - name: Tiny Layout
