@@ -55,7 +55,7 @@ work:
     extra:
       - |
         Independently engineered an end-to-end model training pipeline on
-        Kubeflow Pipelines to train ML models to predict the wait time to enter
+        Kubeflow Pipelines to train ML models to predict wait time for
         each of Capital One's airport lounges using queue position,
         temporal features, and rolling queue-throughput metrics
       - |
@@ -70,11 +70,11 @@ work:
     end_date: 2026-05
     extra:
       - |
-        Overseeing weekly office hours to strengthen students'
+        Oversaw weekly office hours to strengthen students'
         problem-solving, debugging, and algorithm analysis skills, ensuring
         effective application of data structures and algorithms in coursework
       - |
-        Delivering valuable feedback to students from over 200 student-written
+        Delivered valuable feedback to students from over 200 student-written
         analysis projects by highlighting strengths, identifying mistakes, and
         helping students develop problem-solving skills
 
@@ -97,13 +97,14 @@ projects:
     date: 2025-10
     extra:
       - |
-        Created an interactive projector-camera graphing platform that turns
-        physical paper into a  workspace, enabling students to collaboratively
-        explore math concepts without relying on individual screens
+        Created an interactive projector-camera graphing platform that
+        turns physical paper into a collaborative workspace, enabling
+        students to collaboratively explore math concepts without relying
+        on individual screens
       - |
         Engineered a real-time vision system using OpenCV for homography
         calibration and ArUco marker detection, powering accurate equation
-        recognition and graphing, that **won first place in the Invent Track at
+        recognition and graphing that **won first place in the Invent Track at
         DubHacks 2025**
   - name: yHealth
     url: github.com/Kylo33/yhealth
@@ -119,7 +120,7 @@ projects:
         sensors and the mobile application, enabling immediate user feedback
         to improve CPR performance accuracy
       - |
-        Coordinated stakeholder interviews to iterate on the application and
-        to make key design decisions, resulting in a compelling project that
-        won the **first place scholarship award** in the Spring 2025
+        Coordinated stakeholder interviews to iterate on the application
+        and make key design decisions, resulting in a compelling project
+        that won the **first place scholarship award** in the Spring 2025
         Cornerstone Design Competition
